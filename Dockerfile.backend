@@ -1,0 +1,23 @@
+# Use a lightweight Node.js image
+FROM node:20-alpine
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy only the db.json file needed by the server
+COPY db.json .
+
+# Install json-server globally (or use npx in CMD)
+# Using npx is simpler as it avoids a separate install step if json-server isn't huge
+# RUN npm install -g json-server
+
+# Expose the default json-server port
+EXPOSE 3000
+
+# Command to run json-server
+# Use --host 0.0.0.0 to allow connections from outside the container (like the frontend container)
+# Using npx directly:
+CMD ["npx", "json-server", "db.json", "--host", "0.0.0.0"]
+
+# Alternative if you installed globally with RUN:
+# CMD ["json-server", "db.json", "--host", "0.0.0.0"]

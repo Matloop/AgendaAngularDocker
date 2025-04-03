@@ -1,0 +1,48 @@
+/* app.component.scss */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  
+  .app-toolbar {
+    position: fixed;
+    z-index: 2;
+  }
+  
+  .toolbar-spacer {
+    flex: 1 1 auto;
+  }
+  
+  .user-name {
+    margin-right: 16px;
+    font-size: 14px;
+  }
+  
+  .sidenav-container {
+    flex: 1;
+    margin-top: 64px; /* Altura da toolbar */
+  }
+  
+  .sidenav {
+    width: 250px;
+    box-shadow: 3px 0 6px rgba(0,0,0,.24);
+  }
+  
+  .content {
+    padding: 20px;
+  }
+  
+  .active-link {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+  
+  @media (max-width: 599px) {
+    .sidenav-container {
+      margin-top: 56px; /* Altura da toolbar em dispositivos móveis */
+    }
+  }

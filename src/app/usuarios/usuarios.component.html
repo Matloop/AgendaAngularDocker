@@ -1,0 +1,92 @@
+<!-- src/app/usuarios/usuarios.component.html -->
+<div class="container">
+    <h2>Gerenciamento de Usuários</h2>
+  
+    <!-- Formulário de Adição -->
+    <div *ngIf="mostrarFormulario" class="form-container">
+      <h3>Adicionar Novo Usuário</h3>
+      <div class="form-group">
+        <label for="nome">Nome:</label>
+        <input id="nome" [(ngModel)]="usuarioEditando.nome" placeholder="Nome completo">
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input id="email" [(ngModel)]="usuarioEditando.email" placeholder="Email" type="email">
+      </div>
+      <div class="form-group">
+        <label for="senha">Senha:</label>
+        <input id="senha" [(ngModel)]="usuarioEditando.senha" placeholder="Senha" type="password">
+      </div>
+      <div class="form-group">
+        <label for="nivelAcesso">Nível de Acesso:</label>
+        <select id="nivelAcesso" [(ngModel)]="usuarioEditando.nivelAcesso">
+          <option value="admin">Administrador</option>
+          <option value="usuario">Usuário Comum</option>
+        </select>
+      </div>
+      <div class="buttons-group">
+        <button (click)="adicionarUsuario()" class="btn-save">Salvar</button>
+        <button (click)="mostrarFormulario = false" class="btn-cancel">Cancelar</button>
+      </div>
+    </div>
+  
+    <!-- Botão de Adicionar -->
+    <button *ngIf="!mostrarFormulario" (click)="exibirFormulario()" class="btn-add">Adicionar Usuário</button>
+  
+    <!-- Lista de Usuários -->
+    <div class="users-list">
+      <table>
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Nível de Acesso</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let usuario of usuarios">
+            <ng-container *ngIf="usuarioAtualId !== usuario.id; else editFormRow">
+              <td>{{ usuario.nome }}</td>
+              <td>{{ usuario.email }}</td>
+              <td>{{ usuario.nivelAcesso === 'admin' ? 'Administrador' : 'Usuário Comum' }}</td>
+              <td class="actions">
+                <button (click)="editarUsuario(usuario.id!)" class="btn-edit">Editar</button>
+                <button (click)="deletarUsuario(usuario.id!)" class="btn-delete">Excluir</button>
+              </td>
+            </ng-container>
+  
+            <ng-template #editFormRow>
+              <td colspan="4" *ngIf="mostrarEdicaoForm" class="edit-form-cell">
+                <div class="edit-form">
+                  <div class="form-group">
+                    <label for="editNome">Nome:</label>
+                    <input id="editNome" [(ngModel)]="usuarioEditando.nome" placeholder="Nome completo">
+                  </div>
+                  <div class="form-group">
+                    <label for="editEmail">Email:</label>
+                    <input id="editEmail" [(ngModel)]="usuarioEditando.email" placeholder="Email" type="email">
+                  </div>
+                  <div class="form-group">
+                    <label for="editSenha">Senha:</label>
+                    <input id="editSenha" [(ngModel)]="usuarioEditando.senha" placeholder="Nova senha" type="password">
+                  </div>
+                  <div class="form-group">
+                    <label for="editNivelAcesso">Nível de Acesso:</label>
+                    <select id="editNivelAcesso" [(ngModel)]="usuarioEditando.nivelAcesso">
+                      <option value="admin">Administrador</option>
+                      <option value="usuario">Usuário Comum</option>
+                    </select>
+                  </div>
+                  <div class="buttons-group">
+                    <button (click)="confirmarEdicao()" class="btn-save">Salvar</button>
+                    <button (click)="cancelarEdicao()" class="btn-cancel">Cancelar</button>
+                  </div>
+                </div>
+              </td>
+            </ng-template>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>

@@ -1,0 +1,35 @@
+version: '3.8' # Specify docker-compose version
+
+services:
+  # Frontend Service (Angular App served by Nginx)
+  frontend:
+    build:
+      context: . # Use the current directory for build context
+      dockerfile: Dockerfile # Specify the frontend Dockerfile
+    container_name: agenda-frontend
+    ports:
+      - "8080:80" # Map host port 8080 to container port 80 (Nginx)
+    depends_on:
+      - backend # Ensure backend starts before frontend (doesn't guarantee readiness)
+    networks:
+      - agenda-network
+
+  # Backend Service (JSON Server)
+  backend:
+    build:
+      context: . # Use the current directory for build context
+      dockerfile: Dockerfile.backend # Specify the backend Dockerfile
+    container_name: agenda-backend
+    ports:
+      - "3000:3000" # Map host port 3000 to container port 3000 (json-server)
+    volumes:
+      # Mount the local db.json into the container for persistence
+      # Changes made via the API will reflect in your local db.json
+      - ./db.json:/app/db.json
+    networks:
+      - agenda-network
+
+# Define the network
+networks:
+  agenda-network:
+    driver: bridge
