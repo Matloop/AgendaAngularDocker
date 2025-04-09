@@ -23,9 +23,8 @@ services:
     ports:
       - "3000:3000" # Map host port 3000 to container port 3000 (json-server)
     volumes:
-      # Mount the local db.json into the container for persistence
-      # Changes made via the API will reflect in your local db.json
-      - ./db.json:/app/db.json
+      # Mapeia o VOLUME NOMEADO para /app dentro do container
+      - agenda_db_data:/app
     networks:
       - agenda-network
 
@@ -33,3 +32,7 @@ services:
 networks:
   agenda-network:
     driver: bridge
+
+# --- ADICIONADO: Declaração do volume nomeado ---
+volumes:
+  agenda_db_data:
