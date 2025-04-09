@@ -5,19 +5,13 @@ FROM node:20-alpine
 WORKDIR /app
 
 # Copy only the db.json file needed by the server
+# Isso garante que o volume seja populado com os dados iniciais na primeira execução
 COPY db.json .
-
-# Install json-server globally (or use npx in CMD)
-# Using npx is simpler as it avoids a separate install step if json-server isn't huge
-# RUN npm install -g json-server
 
 # Expose the default json-server port
 EXPOSE 3000
 
 # Command to run json-server
-# Use --host 0.0.0.0 to allow connections from outside the container (like the frontend container)
-# Using npx directly:
-CMD ["npx", "json-server", "db.json", "--host", "0.0.0.0"]
-
-# Alternative if you installed globally with RUN:
-# CMD ["json-server", "db.json", "--host", "0.0.0.0"]
+# Use --host 0.0.0.0 to allow connections from outside the container
+# --- ADICIONADO: --watch db.json --- para habilitar a escrita/persistência
+CMD ["npx", "json-server", "--watch", "db.json", "--host", "0.0.0.0"]
