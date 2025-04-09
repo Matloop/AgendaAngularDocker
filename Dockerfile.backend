@@ -1,17 +1,16 @@
-# Use a lightweight Node.js image
+# USA UMA IMAGEM BASE LEVE COM NODE.JS
 FROM node:20-alpine
 
-# Set the working directory inside the container
+# DEFINE O DIRETÓRIO DE TRABALHO DENTRO DO CONTAINER
 WORKDIR /app
 
-# Copy only the db.json file needed by the server
-# Isso garante que o volume seja populado com os dados iniciais na primeira execução
+# COPIA O ARQUIVO INICIAL DO BANCO DE DADOS PARA DENTRO DA IMAGEM
 COPY db.json .
 
-# Expose the default json-server port
+# EXPÕE A PORTA INTERNA DO CONTAINER (INFORMATIVO)
 EXPOSE 3000
 
-# Command to run json-server
-# Use --host 0.0.0.0 to allow connections from outside the container
-# --- ADICIONADO: --watch db.json --- para habilitar a escrita/persistência
+# DEFINE O COMANDO PARA INICIAR O SERVIDOR QUANDO O CONTAINER RODAR
+# --watch: Habilita salvar alterações no db.json
+# --host 0.0.0.0: Permite conexões de outros containers na mesma rede
 CMD ["npx", "json-server", "--watch", "db.json", "--host", "0.0.0.0"]
