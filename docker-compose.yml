@@ -1,38 +1,40 @@
-version: '3.8' # Specify docker-compose version
+# VERSÃO DA SINTAXE DO COMPOSE
+version: '3.8'
 
+# DEFINE OS CONTAINERS (SERVIÇOS)
 services:
-  # Frontend Service (Angular App served by Nginx)
+  # SERVIÇO DO FRONTEND (Angular + Nginx)
   frontend:
     build:
-      context: . # Use the current directory for build context
-      dockerfile: Dockerfile # Specify the frontend Dockerfile
-    container_name: agenda-frontend
-    ports:
-      - "8080:80" # Map host port 8080 to container port 80 (Nginx)
-    depends_on:
-      - backend # Ensure backend starts before frontend (doesn't guarantee readiness)
-    networks:
-      - agenda-network
+      context: . # Diretório atual como contexto para build
+      dockerfile: Dockerfile # Dockerfile do frontend
+    container_name: agenda-frontend # Nome do container
+    ports: # MAPEAMENTO DE PORTAS (Host:Container)
+      - "8080:80" # Mapeia porta 8080 do PC para porta 80 do container (Nginx)
+    depends_on: # DEPENDÊNCIAS DE INICIALIZAÇÃO
+      - backend # Inicia 'backend' antes de 'frontend'
+    networks: # REDES DO CONTAINER
+      - agenda-network # Conecta à rede 'agenda-network'
 
-  # Backend Service (JSON Server)
+  # SERVIÇO DO BACKEND (JSON Server)
   backend:
     build:
-      context: . # Use the current directory for build context
-      dockerfile: Dockerfile.backend # Specify the backend Dockerfile
-    container_name: agenda-backend
-    ports:
-      - "3000:3000" # Map host port 3000 to container port 3000 (json-server)
-    volumes:
-      # Mapeia o VOLUME NOMEADO para /app dentro do container
-      - agenda_db_data:/app
-    networks:
-      - agenda-network
+      context: . # Diretório atual como contexto para build
+      dockerfile: Dockerfile.backend # Dockerfile do backend
+    container_name: agenda-backend # Nome do container
+    ports: # MAPEAMENTO DE PORTAS (Host:Container)
+      - "3000:3000" # Mapeia porta 3000 do PC para porta 3000 do container (json-server)
+    volumes: # VOLUMES (ARMAZENAMENTO PERSISTENTE)
+      # Mapeia o VOLUME NOMEADO 'agenda_db_data' para /app no container
+      - agenda_db_data:/app # Garante persistência do db.json e evita erros EBUSY
+    networks: # REDES DO CONTAINER
+      - agenda-network # Conecta à rede 'agenda-network'
 
-# Define the network
+# DEFINE A REDE CUSTOMIZADA
 networks:
   agenda-network:
-    driver: bridge
+    driver: bridge # Usa o driver de rede padrão 'bridge'
 
-# --- ADICIONADO: Declaração do volume nomeado ---
+# DECLARA O VOLUME NOMEADO
 volumes:
-  agenda_db_data:
+  agenda_db_data: # Define um volume gerenciado pelo Docker chamado 'agenda_db_data'
